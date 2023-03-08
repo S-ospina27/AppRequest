@@ -1,4 +1,3 @@
-
 // import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // export function set(key,item){
@@ -9,6 +8,10 @@
 //   return AsyncStorage.getItem(key);
 // }
 
-
-
-
+export function getHeader() {
+  return {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  };
+}

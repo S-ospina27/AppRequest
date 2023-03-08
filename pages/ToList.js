@@ -11,10 +11,12 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Requirements from "../components/Requirements";
+import RoutesList from "../components/tool/RoutesList";
+import { getHeader } from "../components/tool/SessionSettings";
 
 const ToList = ({ route, navigation }) => {
   const [readRequirements, setReadRequirements] = useState([]);
-  const ws = React.useRef(new WebSocket('ws://10.0.2.2:8080')).current;
+  const ws = React.useRef(new WebSocket("ws://10.0.2.2:8080")).current;
 
   const handleWebsocket = () => {
     ws.onopen = () => {
@@ -39,24 +41,14 @@ const ToList = ({ route, navigation }) => {
     const { idcompanies } = route.params;
     const form = new FormData();
     form.append("idcompanies", idcompanies);
-    axios
-      .post(
-        "http://10.0.2.2:8000/api/companies/requirements/requirementsByclients",
-        form,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      )
-      .then((res) => {
-        setReadRequirements(!res.data.status ? res.data : []);
-      });
+    axios.post(RoutesList.api.companies.read, form, getHeader()).then((res) => {
+      setReadRequirements(!res.data.status ? res.data : []);
+    });
   };
 
   useEffect(() => {
-     HandleReadRequirements();
-    handleWebsocket();
+    HandleReadRequirements();
+    // handleWebsocket();
   }, []);
 
   return (
@@ -100,6 +92,8 @@ const styles = StyleSheet.create({
     paddingLeft: 2,
     paddingRight: 12,
     width: "97%",
+    border:"none",
+    elevation: 4,
   },
   text: {
     fontSize: 32,

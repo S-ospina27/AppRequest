@@ -1,4 +1,4 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+// import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
@@ -13,34 +13,22 @@ import {
 } from "react-native";
 import DecoratedButton from "../components/DecoratedButton";
 import DecoratedTexinput from "../components/DecoratedTexinput";
-// import { set } from "../components/tool/SessionSettings";
+import RoutesList from "../components/tool/RoutesList";
+import { getHeader } from "../components/tool/SessionSettings";
 
 const Login = ({ navigation }) => {
   const [nit, setNit] = useState("");
   const [email, setEmail] = useState("");
-  const[id,setId]=useState(""); 
-
-  // const setStringValue = async (value) => {
-  //   try {
-  //     await AsyncStorage.setItem('idcompanies',JSON.stringify(value))
-  //   } catch(e) {
-  //   console.log(e);
-  //   }
-  // }
 
   const handleSubmit = () => {
     const form = new FormData();
     form.append("companies_nit", nit);
     form.append("companies_email", email);
     axios
-      .post("http://10.0.2.2:8000/api/companies/create", form, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
+      .post( RoutesList.api.auth.login, form,getHeader())
       .then((res) => {
         if (res.data.status === "info") {
-          navigation.navigate("Lista",{idcompanies:JSON.stringify(res.data.data.idcompanies)});
+          navigation.navigate("crear",{idcompanies:JSON.stringify(res.data.data.idcompanies)});
           
 
           setNit("");
@@ -102,14 +90,14 @@ const styles = StyleSheet.create({
   },
   Imagen_logo: {
     marginLeft: 50,
-    width: 330,
-    height: 100,
+    width: 200,
+    height: 57,
   },
   container_logo: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    width: 100,
+    width: 170,
   },
   container_form: {
     flex: 1,
