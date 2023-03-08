@@ -6,6 +6,7 @@ const DecoratedTexArea = ({placeholder,value,setValue}) => {
     <TextInput
     style={styles.inputs}
     placeholder={placeholder}
+    multiline
     placeholderTextColor={"#C4C4C4"}
     value={value}
     onChangeText={(text) => {
@@ -22,8 +23,8 @@ const styles = StyleSheet.create({
       margin:"auto",
       borderWidth: 1,
       width: "95%",
-      height:"35%",
-      borderRadius: 40,
+      height:"13%",
+      borderRadius: 15,
       marginLeft: 50,
       marginTop: 20,
       borderColor: "#F5F5F5",

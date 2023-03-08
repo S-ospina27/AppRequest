@@ -41,7 +41,7 @@ const ToList = ({ route, navigation }) => {
     const { idcompanies } = route.params;
     const form = new FormData();
     form.append("idcompanies", idcompanies);
-    axios.post(RoutesList.api.companies.read, form, getHeader()).then((res) => {
+    axios.post(RoutesList.api.requirements.read, form, getHeader()).then((res) => {
       setReadRequirements(!res.data.status ? res.data : []);
     });
   };

@@ -6,7 +6,8 @@ export default {
       auth: {
         login: `${host}/api/companies/create`,
       },
-      companies:{
+      requirements:{
+        create:`${host}/api/companies/requirements/create`,
         read: `${host}/api/companies/requirements/requirementsByclients`,
       }
     },
