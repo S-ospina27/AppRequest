@@ -16,7 +16,7 @@ const Requirements = ({ requirements }) => {
 export default Requirements;
 const styles = StyleSheet.create({
   container: {
-    width: 338,
+    width: 340,
     padding: 10,
     borderWidth: 0.75,
     borderRadius: 10,
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     marginLeft: "6%",
     backgroundColor:"#13A5EE",
     marginVertical: 8,
-    marginHorizontal: 16,
+    marginHorizontal: 1,
   },
   text: {
     fontSize: 18,

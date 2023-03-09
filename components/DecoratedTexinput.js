@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     inputs: {
       margin:"auto",
       borderWidth: 1,
-      width: "95%",
+      width: "88%",
       borderRadius: 40,
       marginLeft: 50,
       marginTop: 20,

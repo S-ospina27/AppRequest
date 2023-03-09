@@ -1,4 +1,5 @@
 // import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
@@ -20,6 +21,14 @@ const Login = ({ navigation }) => {
   const [nit, setNit] = useState("");
   const [email, setEmail] = useState("");
 
+  const storeData = async (value) => {
+    try {
+      await AsyncStorage.setItem('idcompanies',JSON.stringify(value));
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   const handleSubmit = () => {
     const form = new FormData();
     form.append("companies_nit", nit);
@@ -28,11 +37,11 @@ const Login = ({ navigation }) => {
       .post( RoutesList.api.auth.login, form,getHeader())
       .then((res) => {
         if (res.data.status === "info") {
-          navigation.navigate("list",{idcompanies:JSON.stringify(res.data.data.idcompanies)});
-          
-
+          storeData(res.data.data.idcompanies);
           setNit("");
           setEmail("");
+          navigation.navigate("list",{idcompanies:JSON.stringify(res.data.data.idcompanies)});
+          // navigation.navigate("list");
         } else {
           Alert.alert("Error", "Usuario y/o estan malos", [
             {

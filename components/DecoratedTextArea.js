@@ -22,8 +22,9 @@ const styles = StyleSheet.create({
     inputs: {
       margin:"auto",
       borderWidth: 1,
-      width: "95%",
-      height:"13%",
+      width: "87%",
+      // marginLeft:10,
+      // height:"13%",
       borderRadius: 15,
       marginLeft: 50,
       marginTop: 20,

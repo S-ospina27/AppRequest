@@ -1,9 +1,11 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Image,
   ImageBackground,
   Pressable,
+  ScrollView,
   StyleSheet,
   Text,
   View,
@@ -14,25 +16,41 @@ import RoutesList from "../components/tool/RoutesList";
 import { getHeader } from "../components/tool/SessionSettings";
 
 
-const CreateRequirements = ({ route, navigation }) => {
+const CreateRequirements = ({navigation }) => {
   const [requirements_priority, setRequirements_priority] = useState("");
   const [requirements_name, setRequirements_name] = useState("");
   const [requirements_description, setRequirements_description] = useState("");
+  const [idcompanies,setIdcompanies]= useState("");
+
+
+const getData = async () => {
+  try {
+    const value = await AsyncStorage.getItem('idcompanies')
+     setIdcompanies(value);
+
+  } catch(e) {
+   console.log(e)
+  }
+}
+
+useEffect(() => {
+  getData();
+}, []);
+
 
   const handleCreateRequirements= ()=>{
-    const { idcompanies } = route.params;
   
     const form = new FormData();
     form.append("idcompanies",idcompanies);
     form.append("requirements_name",requirements_name);
     form.append("requirements_priority",requirements_priority);
     form.append("requirements_description",requirements_description);
-
+    console.log(idcompanies)
     axios.post(RoutesList.api.requirements.create,form,getHeader()).then((res)=>{
       console.log(res.data)
       if (res.data.status === "success") {
         console.log("hola")
-        navigation.navigate("list",{idcompanies:idcompanies})
+        navigation.navigate("list")
         setRequirements_name("");
         setRequirements_priority("");
         setRequirements_description("");
@@ -45,7 +63,7 @@ const CreateRequirements = ({ route, navigation }) => {
       source={require("../assets/img/Fondo.png")}
       style={styles.imagen_container}
     >
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <Image
           style={styles.Imagen_logo}
           source={require("../assets/img/Teclab.png")}
@@ -71,7 +89,7 @@ const CreateRequirements = ({ route, navigation }) => {
         >
           <Text style={styles.Text}>Crear</Text>
         </Pressable>
-      </View>
+      </ScrollView>
     </ImageBackground>
   );
 };
@@ -81,9 +99,12 @@ export default CreateRequirements;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: "90%",
-    marginRight: 90,
-    justifyContent: "center",
+    width: "100%",
+    marginRight: 100,
+    marginTop:80,
+    marginHorizontal: 45,
+    // justifyContent: "center",
+    height:"90%"
   },
   imagen_container: {
     flex: 1,
@@ -91,12 +112,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   button: {
+    width:"80%",
     alignItems: "center",
     justifyContent: "center",
     marginTop: 13,
-    marginLeft: 72,
+    marginLeft: 62,
     paddingVertical: 14,
-    paddingHorizontal: 100,
+    paddingHorizontal: 40,
     borderRadius: 30,
     elevation: 4,
     backgroundColor: "#08B4FA",
@@ -107,6 +129,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   Imagen_logo: {
-    marginLeft: 136,
+    marginLeft: 156,
   },
 });

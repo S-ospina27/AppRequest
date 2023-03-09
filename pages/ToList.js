@@ -1,4 +1,5 @@
 // import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
@@ -14,10 +15,23 @@ import Requirements from "../components/Requirements";
 import RoutesList from "../components/tool/RoutesList";
 import { getHeader } from "../components/tool/SessionSettings";
 
-const ToList = ({ route, navigation }) => {
+const ToList = ({navigation }) => {
   const [readRequirements, setReadRequirements] = useState([]);
+  const [idcompanies,setIdcompanies]= useState("");
+  const [render ,setRender]= useState(false);
   const ws = React.useRef(new WebSocket("ws://10.0.2.2:8080")).current;
 
+  
+const getData = async () => {
+  try {
+    const value = await AsyncStorage.getItem('idcompanies')
+     setIdcompanies(value);
+     setRender(true);
+
+  } catch(e) {
+   console.log(e)
+  }
+}
   const handleWebsocket = () => {
     ws.onopen = () => {
       console.log("websocket abierto");
@@ -38,19 +52,19 @@ const ToList = ({ route, navigation }) => {
   };
 
   const HandleReadRequirements = () => {
-    const { idcompanies } = route.params;
     const form = new FormData();
     form.append("idcompanies", idcompanies);
+    console.log(idcompanies)
     axios.post(RoutesList.api.requirements.read, form, getHeader()).then((res) => {
-      setReadRequirements(!res.data.status ? res.data : []);
+      setReadRequirements(!res.data.status ? res.data : []); 
     });
   };
-
+  
   useEffect(() => {
+    getData();
     HandleReadRequirements();
-    // handleWebsocket();
   }, []);
-
+  
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -59,10 +73,14 @@ const ToList = ({ route, navigation }) => {
       >
         <View style={styles.container_form}>
           <SafeAreaView>
-            <FlatList
+          {
+            render&&(
+              <FlatList
               data={readRequirements}
               renderItem={({ item }) => <Requirements requirements={item} />}
             ></FlatList>
+            )
+          }
           </SafeAreaView>
         </View>
       </ImageBackground>
@@ -91,7 +109,7 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
     paddingLeft: 2,
     paddingRight: 12,
-    width: "97%",
+    width: "100%",
     border:"none",
     elevation: 4,
   },
