@@ -28,7 +28,7 @@ const Login = ({ navigation }) => {
       .post( RoutesList.api.auth.login, form,getHeader())
       .then((res) => {
         if (res.data.status === "info") {
-          navigation.navigate("crear",{idcompanies:JSON.stringify(res.data.data.idcompanies)});
+          navigation.navigate("list",{idcompanies:JSON.stringify(res.data.data.idcompanies)});
           
 
           setNit("");

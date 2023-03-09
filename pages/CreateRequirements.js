@@ -32,7 +32,7 @@ const CreateRequirements = ({ route, navigation }) => {
       console.log(res.data)
       if (res.data.status === "success") {
         console.log("hola")
-        navigation.navigate("Lista",{idcompanies:idcompanies})
+        navigation.navigate("list",{idcompanies:idcompanies})
         setRequirements_name("");
         setRequirements_priority("");
         setRequirements_description("");
