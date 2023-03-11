@@ -2,6 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import {
+  Alert,
   Image,
   ImageBackground,
   Pressable,
@@ -45,16 +46,15 @@ useEffect(() => {
     form.append("requirements_name",requirements_name);
     form.append("requirements_priority",requirements_priority);
     form.append("requirements_description",requirements_description);
-    console.log(idcompanies)
     axios.post(RoutesList.api.requirements.create,form,getHeader()).then((res)=>{
       console.log(res.data)
       if (res.data.status === "success") {
-        console.log("hola")
-        navigation.navigate("list")
         setRequirements_name("");
         setRequirements_priority("");
         setRequirements_description("");
+        navigation.navigate("list",{id:idcompanies})
       }
+      
     });
 
   };

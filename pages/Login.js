@@ -41,7 +41,6 @@ const Login = ({ navigation }) => {
           setNit("");
           setEmail("");
           navigation.navigate("list",{idcompanies:JSON.stringify(res.data.data.idcompanies)});
-          // navigation.navigate("list");
         } else {
           Alert.alert("Error", "Usuario y/o estan malos", [
             {

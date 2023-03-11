@@ -15,56 +15,64 @@ import Requirements from "../components/Requirements";
 import RoutesList from "../components/tool/RoutesList";
 import { getHeader } from "../components/tool/SessionSettings";
 
-const ToList = ({navigation }) => {
+const ToList = ({route,navigation  }) => {
   const [readRequirements, setReadRequirements] = useState([]);
-  const [idcompanies,setIdcompanies]= useState("");
-  const [render ,setRender]= useState(false);
+
+  
   const ws = React.useRef(new WebSocket("ws://10.0.2.2:8080")).current;
 
+  // const handleWebsocket = () => {
+  //   ws.onopen = () => {
+  //     console.log("websocket abierto");
+  //   };
+
+  //   ws.onclose = (e) => {
+  //     console.log("web socket cerrado");
+  //   };
+
+  //   ws.onerror = (e) => {
+  //     console.log(e);
+  //   };
+
+  //   ws.onmessage = (e) => {
+  //     console.log(e);
+  //     HandleReadRequirements();
+  //   };
+  // };
+
+// const getData = async () => {
+//   try {
+//     const value = await AsyncStorage.getItem('idcompanies')
+//      setIdcompanies(value);
+//      setRender(true);
+
+//   } catch(e) {
+//    console.log(e)
+//   }
+// }
+
+const HandleReadRequirements = () => {
+  const {idcompanies,id} = route.params;
+ const form = new FormData();
+       if (![undefined,null].includes(idcompanies)) {
+         form.append("idcompanies", idcompanies);
+       
+       }else{
+      form.append("idcompanies",id);
+   
+       }
+       axios.post(RoutesList.api.requirements.read, form, getHeader()).then((res) => {
+        setReadRequirements(!res.data.status ? res.data : []);
+        
+      });
+};
   
-const getData = async () => {
-  try {
-    const value = await AsyncStorage.getItem('idcompanies')
-     setIdcompanies(value);
-     setRender(true);
 
-  } catch(e) {
-   console.log(e)
-  }
-}
-  const handleWebsocket = () => {
-    ws.onopen = () => {
-      console.log("websocket abierto");
-    };
 
-    ws.onclose = (e) => {
-      console.log("web socket cerrado");
-    };
-
-    ws.onerror = (e) => {
-      console.log(e);
-    };
-
-    ws.onmessage = (e) => {
-      console.log(e);
-      HandleReadRequirements();
-    };
-  };
-
-  const HandleReadRequirements = () => {
-    const form = new FormData();
-    form.append("idcompanies", idcompanies);
-    console.log(idcompanies)
-    axios.post(RoutesList.api.requirements.read, form, getHeader()).then((res) => {
-      setReadRequirements(!res.data.status ? res.data : []); 
-    });
-  };
-  
   useEffect(() => {
-    getData();
     HandleReadRequirements();
   }, []);
-  
+
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -73,14 +81,13 @@ const getData = async () => {
       >
         <View style={styles.container_form}>
           <SafeAreaView>
-          {
-            render&&(
-              <FlatList
+          <FlatList
               data={readRequirements}
               renderItem={({ item }) => <Requirements requirements={item} />}
+             
             ></FlatList>
-            )
-          }
+            
+        
           </SafeAreaView>
         </View>
       </ImageBackground>
